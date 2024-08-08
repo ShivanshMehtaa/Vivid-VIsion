@@ -52,10 +52,10 @@ while True:
             # bgr format mei color
             cv.circle(image, (x,y), 2, (0,255,0)) 
 
-        if rightEye[0].y - rightEye[1].y <0.01:
-            print("Right Eye Closed -> Mouse clicked")
-            pyautogui.rightClick()
-            pyautogui.sleep(1)  
+        # if rightEye[0].y - rightEye[1].y <0.01:
+        #     print("Right Eye Closed -> Mouse clicked")
+        #     pyautogui.rightClick()
+        #     pyautogui.sleep(1)  
         
         # here we are tracking the left eye
         # 145->bottom of leftEye
@@ -73,7 +73,25 @@ while True:
             # bgr format mei color
             cv.circle(image, (x,y), 2, (0,0,255))
 
-        if leftEye[0].y - leftEye[1].y <0.01:
+        # if leftEye[0].y - leftEye[1].y <0.01:
+        #     print("Left Eye Closed -> Mouse clicked")
+        #     pyautogui.click()
+        #     pyautogui.sleep(1)
+
+        rightEyeClosed = (rightEye[0].y - rightEye[1].y) < 0.01
+        leftEyeClosed = (leftEye[0].y - leftEye[1].y) < 0.01
+
+        if rightEyeClosed and leftEyeClosed:
+            print("Both Eyes Closed -> Mouse clicked")
+            pyautogui.scroll(-100)
+            # pyautogui.sleep(1)
+        
+        elif rightEyeClosed:
+            print("Right Eye Closed -> Mouse clicked")
+            pyautogui.rightClick()
+            pyautogui.sleep(1)
+
+        elif leftEyeClosed:
             print("Left Eye Closed -> Mouse clicked")
             pyautogui.click()
             pyautogui.sleep(1)

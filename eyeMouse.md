@@ -6,7 +6,7 @@ we use allface landmarks as it returns us the x,y,z coordinates of the face we a
 
 MediaPipe provides a set of 468 3d face landmarks, but mediapipe facemesh extends it landmarks 474->478 are part of it and is used for precise iris and eye tracking
 
-right eye ke corrds -> 474->478
+right iris ke corrds -> 474->478
 left eye ko corrds ->145->160
 
 TO move the mouse with the right eye we need the id of the landmark points and landmark points -> for this we use enumerate function
