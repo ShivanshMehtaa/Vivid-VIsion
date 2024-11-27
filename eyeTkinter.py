@@ -8,13 +8,13 @@ from threading import Thread
 class EyeMouseApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Eye Mouse Control")
+        self.root.title("Super Head Control")
         self.root.geometry("800x600")
 
         self.canvas = tk.Canvas(root, width=800, height=400)
         self.canvas.pack()
 
-        self.status_label = tk.Label(root, text="Status: Initializing...", font=("Helvetica", 14))
+        self.status_label = tk.Label(root, text="Estado: Iniciando...", font=("Helvetica", 14))
         self.status_label.pack(pady=10)
 
         self.faceMesh = mediapipe.solutions.face_mesh.FaceMesh(refine_landmarks=True)
@@ -27,8 +27,8 @@ class EyeMouseApp:
     def update_frame(self):
         ret, image = self.fr.read()
         if not ret:
-            print("Failed to capture image")
-            self.status_label.config(text="Status: Failed to capture image")
+            print("No se pudo capturar la imagen")
+            self.status_label.config(text="Estado: No se pudo capturar la imagen")
             self.root.after(10, self.update_frame)
             return
 
@@ -60,25 +60,30 @@ class EyeMouseApp:
                 y = int(landMark.y * windowHieght)
                 cv.circle(image, (x, y), 2, (0, 0, 255))
 
+            nose_landmark = oneFacePoints[1]
+            nose_x = int(nose_landmark.x * windowWidth)
+            nose_y = int(nose_landmark.y * windowHieght)
+
+
             rightEyeClosed = (rightEye[0].y - rightEye[1].y) < 0.01
             leftEyeClosed = (leftEye[0].y - leftEye[1].y) < 0.01
 
             if rightEyeClosed and leftEyeClosed:
                 print("Both Eyes Closed -> Scrolling down")
-                self.status_label.config(text="Status: Both Eyes Closed -> Scrolling down")
+                self.status_label.config(text="Estado: Ambos Ojos Cerrados -> Scroll abajo")
                 pyautogui.scroll(-100)
             elif rightEyeClosed:
                 print("Right Eye Closed -> Mouse clicked")
-                self.status_label.config(text="Status: Right Eye Closed -> Mouse clicked")
+                self.status_label.config(text="Estado: Ojo Derecho Cerrado -> Click")
                 pyautogui.rightClick()
                 pyautogui.sleep(1)
             elif leftEyeClosed:
                 print("Left Eye Closed -> Mouse clicked")
-                self.status_label.config(text="Status: Left Eye Closed -> Mouse clicked")
+                self.status_label.config(text="Estado: Ojo Izquierdo Cerrado -> Click")
                 pyautogui.click()
                 pyautogui.sleep(1)
             else:
-                self.status_label.config(text="Status: Eyes Open")
+                self.status_label.config(text="Estado: Ojos abiertos")
 
         self.display_image(image)
         self.root.after(10, self.update_frame)
